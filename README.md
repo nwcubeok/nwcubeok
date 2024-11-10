@@ -1,5 +1,5 @@
 <div align="center" style="background-color:#1e1e1e; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-  <img src="./github-banner-rose.jpg" alt="GitHub Banner" style="border-radius: 10px; width: 100%;">
+  <img src="./github-banner-lite-rose.jpg" alt="GitHub Banner" style="border-radius: 10px; width: 100%;">
   
   <h1 style="color: #f9f9f9; font-family: 'Courier New', Courier, monospace;">👋 Hi, I'm nwcubeok!</h1>
   <p style="color: #b3b3b3; font-size: 1.2em; font-style: italic;">Passionate about coding, creativity, and collaboration</p>
