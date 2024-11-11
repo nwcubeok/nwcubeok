@@ -1,16 +1,16 @@
 <div align="center" style="background-color:#1e1e1e; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-  <img src="./github-banner-lite-rose.jpg" alt="GitHub Banner" style="border-radius: 10px; width: 100%;">
+  <img src="./github-banner-lite-purple.jpg" alt="GitHub Banner" style="border-radius: 10px; width: 100%;">
   
-  <h1 style="color: #f9f9f9; font-family: 'Courier New', Courier, monospace;">👋 Hi, I'm nwcubeok!</h1>
-  <p style="color: #b3b3b3; font-size: 1.2em; font-style: italic;">Passionate about coding, creativity, and collaboration</p>
-  <p style="color: #b3b3b3; font-size: 2em;">Currently working on web projects using 3D technologies</p>
+  <h1>👋 Hi, I'm Rayane!</h1>
+  <p>Passionate about coding, creativity, and collaboration</p>
+  <p>Currently working on web projects using 3D technologies</p>
 </div>
 
 
 ---
 
 ### 💡 Technologies & Tools:
-<p>
+<p align="center">
   <img src="https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
   <img src="https://img.shields.io/badge/Python-%233776AB.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
   <img src="https://img.shields.io/badge/HTML5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
@@ -19,8 +19,8 @@
   <img src="https://img.shields.io/badge/Vite.js-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" alt="Vite.js" />
   <img src="https://img.shields.io/badge/Three.js-%23000000.svg?style=for-the-badge&logo=three.js&logoColor=white" alt="Three.js" />
   <img src="https://img.shields.io/badge/TailwindCSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
-  . . .
 </p>
+<p align="center">and more...</p>
 
 ---
 
