@@ -1,5 +1,5 @@
 <div align="center" style="background-color:#1e1e1e; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-  <img src="./github-banner-lite-purple.jpg" alt="GitHub Banner" style="border-radius: 10px; width: 100%;">
+  <img src="./public/readme/github-banner-lite-purple.jpg" alt="GitHub Banner" style="border-radius: 10px; width: 100%;">
   
   <h1>👋 Hi, I'm Rayane!</h1>
   <p>Passionate about coding, creativity, and collaboration</p>
@@ -40,4 +40,3 @@
     </td>
   </tr>
 </table>
-
