@@ -32,8 +32,11 @@ const Icons = {
 
 const NAVBAR_DATA = [
   { href: "#", icon: Icons.home, label: "Home" },
-  { href: "#", icon: Icons.jojo, label: "Jojo" },
 ];
+
+const PROJECTS_DATA = [
+  { href: "#", icon: Icons.jojo, label: "Jojodle" },
+]
 
 const CONTACT_DATA = {
   social: {
@@ -61,7 +64,29 @@ export function Navbar() {
                     "size-12 rounded-full"
                   )}
                 >
-                  <item.icon className="size-4" />
+                  <item.icon/>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{item.label}</p>
+              </TooltipContent>
+            </Tooltip>
+          </DockIcon>
+        ))}
+        <Separator orientation="vertical" className="h-full" />
+        {PROJECTS_DATA.map((item) => (
+          <DockIcon key={item.label}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href={item.href}
+                  aria-label={item.label}
+                  className={cn(
+                    buttonVariants({ variant: "ghost", size: "icon" }),
+                    "size-12 rounded-full"
+                  )}
+                >
+                  <item.icon/>
                 </Link>
               </TooltipTrigger>
               <TooltipContent>
