@@ -5,14 +5,21 @@ export default {
     content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/sections/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
   	extend: {
-		fontFamily: {
-			generalsans: ['General Sans', 'sans-serif'],
-			gasoekone: ['Gasoek One', 'sans-serif'],
-		},
+  		fontFamily: {
+  			generalsans: [
+  				'General Sans',
+  				'sans-serif'
+  			],
+  			gasoekone: [
+  				'Gasoek One',
+  				'sans-serif'
+  			]
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -59,6 +66,28 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		keyframes: {
+  			pan: {
+  				'0%': {
+  					backgroundPosition: '0% 0%'
+  				},
+  				'100%': {
+  					backgroundPosition: '100% 100%'
+  				}
+  			},
+  			'background-position-spin': {
+  				'0%': {
+  					backgroundPosition: 'top center'
+  				},
+  				'100%': {
+  					backgroundPosition: 'bottom center'
+  				}
+  			}
+  		},
+  		animation: {
+  			pan: 'pan 140s linear infinite',
+  			'background-position-spin': 'background-position-spin 3000ms infinite alternate'
   		}
   	}
   },

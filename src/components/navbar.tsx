@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { HomeIcon, GithubIcon } from "lucide-react";
+import JojoLogo from "@/components/jojo-logo";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -12,18 +13,6 @@ import { Dock, DockIcon } from "@/components/ui/dock";
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
-const JojoLogo = () => {
-  return (
-      <Image
-        className="dark:invert"
-        src="/jojo_logo.svg"
-        alt="Next.js logo"
-        width={18}
-        height={18}
-        priority
-      />
-  )
-}
 const Icons = {
   home: HomeIcon,
   github: GithubIcon,
@@ -31,11 +20,11 @@ const Icons = {
 };
 
 const NAVBAR_DATA = [
-  { href: "#", icon: Icons.home, label: "Home" },
+  { href: "#home", icon: Icons.home, label: "Home" },
 ];
 
 const PROJECTS_DATA = [
-  { href: "#", icon: Icons.jojo, label: "Jojodle" },
+  { href: "#projects", icon: Icons.jojo, label: "Jojodle" },
 ]
 
 const CONTACT_DATA = {
@@ -50,85 +39,87 @@ const CONTACT_DATA = {
 
 export function Navbar() {
   return (
-    <TooltipProvider>
-      <Dock direction="middle">
-        {NAVBAR_DATA.map((item) => (
-          <DockIcon key={item.label}>
+    <div className="fixed top-0 left-1/2 -translate-x-1/2">
+      <TooltipProvider>
+        <Dock direction="middle">
+          {NAVBAR_DATA.map((item) => (
+            <DockIcon key={item.label}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href={item.href}
+                    aria-label={item.label}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "size-12 rounded-full"
+                    )}
+                  >
+                    <item.icon/>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{item.label}</p>
+                </TooltipContent>
+              </Tooltip>
+            </DockIcon>
+          ))}
+          <Separator orientation="vertical" className="h-full" />
+          {PROJECTS_DATA.map((item) => (
+            <DockIcon key={item.label}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href={item.href}
+                    aria-label={item.label}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "size-12 rounded-full"
+                    )}
+                  >
+                    <item.icon/>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{item.label}</p>
+                </TooltipContent>
+              </Tooltip>
+            </DockIcon>
+          ))}
+          <Separator orientation="vertical" className="h-full" />
+          {Object.entries(CONTACT_DATA.social).map(([name, social]) => (
+            <DockIcon key={name}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href={social.url}
+                    aria-label={social.name}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "size-12 rounded-full"
+                    )}
+                  >
+                    <social.icon className="size-4" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{name}</p>
+                </TooltipContent>
+              </Tooltip>
+            </DockIcon>
+          ))}
+          <DockIcon>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link
-                  href={item.href}
-                  aria-label={item.label}
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "size-12 rounded-full"
-                  )}
-                >
-                  <item.icon/>
-                </Link>
+                <ModeToggle />
               </TooltipTrigger>
               <TooltipContent>
-                <p>{item.label}</p>
+                <p>Theme</p>
               </TooltipContent>
             </Tooltip>
           </DockIcon>
-        ))}
-        <Separator orientation="vertical" className="h-full" />
-        {PROJECTS_DATA.map((item) => (
-          <DockIcon key={item.label}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href={item.href}
-                  aria-label={item.label}
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "size-12 rounded-full"
-                  )}
-                >
-                  <item.icon/>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{item.label}</p>
-              </TooltipContent>
-            </Tooltip>
-          </DockIcon>
-        ))}
-        <Separator orientation="vertical" className="h-full" />
-        {Object.entries(CONTACT_DATA.social).map(([name, social]) => (
-          <DockIcon key={name}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href={social.url}
-                  aria-label={social.name}
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "size-12 rounded-full"
-                  )}
-                >
-                  <social.icon className="size-4" />
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </DockIcon>
-        ))}
-        <DockIcon>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <ModeToggle />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Theme</p>
-            </TooltipContent>
-          </Tooltip>
-        </DockIcon>
-      </Dock>
-    </TooltipProvider>
+        </Dock>
+      </TooltipProvider>
+    </div>
   );
 }
 
