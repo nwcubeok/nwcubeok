@@ -12,15 +12,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-:root {
-  
-  --light-gold-rgb: rgba(255, 215, 0, 1);
-  --dark-gold-rgb: rgba(184, 134, 11, 1);
-}
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 11 9% 92.4%;
     --dot-color: 313 0% 50% / 0.2;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -37,7 +31,7 @@ body {
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
+    --border: 305 16.7% 28.2%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --chart-1: 12 76% 61%;
@@ -46,9 +40,12 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --scrollbar-main: 220 7.7% 84.7%;
+    --light-gold-rgb: rgb(198, 85, 212);
+    --dark-gold-rgb: rgb(118, 25, 131);
   }
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 242 32% 7%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -64,7 +61,7 @@ body {
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
+    --border: 316 28.9% 14.9%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
     --chart-1: 220 70% 50%;
@@ -72,6 +69,9 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --scrollbar-main: 220 85.4% 48.2%;
+    --light-gold-rgb: rgb(247, 213, 60); 
+    --dark-gold-rgb: rgb(153, 145, 74);
   }
 }
 
@@ -82,5 +82,26 @@ body {
   body {
     @apply bg-background text-foreground;
 
+  }
+}
+
+@layer utilities {
+  *::-webkit-scrollbar {
+    width: 0px;
+    height: 20px;
+  }
+
+  *::-webkit-scrollbar-track {
+    border-radius: 50vh;
+    background: #ff202000;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-main);
+    border-radius: 100vh;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: #ffffff60;
   }
 }

@@ -1,24 +1,44 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import React from "react";
 import TypingAnimation from "@/components/ui/typing-animation"; 
+import { TextAnimate } from "@/components/ui/text-animate";
+import { cn } from "@/lib/utils";
+import {InteractiveGridPattern} from "@/components/ui/interactive-grid-pattern";
 
 const Hero = () => {
-  const texts = ["newcube", "nwcubeok", "nwcubeop", "newcubeop"];
-
-  const [displayText, setDisplayText] = useState(() => {
-    const randomText = texts[Math.floor(Math.random() * texts.length)];
-    return randomText;
-  });
-
-
   return (
-    <section id="home" className="min-h-[86vh] flex items-center justify-center">
-      <TypingAnimation
-        className="font-gasoekone text-6xl"
-        text={"nwcubeok"}
-        duration={140}
-      />
+    <section id="home" className="min-h-[86vh] relative flex w-full flex-col items-center justify-center overflow-hidden">
+      <TextAnimate 
+      animation="slideLeft" 
+      by="character" 
+      as="h1" 
+      className={cn(
+        "z-10 whitespace-pre-wrap font-gasoekone text-6xl text-[#11090f] dark:text-[#f1e8e6]",
+        "pointer-events-none user-select-none"
+      )}>
+      nwcubeok
+      </TextAnimate>
+      <div className="absolute flex flex-row items-center justify-center w-full h-screen">
+        <InteractiveGridPattern
+          width={40}
+          height={37}
+          squares={[51, 51]}
+          className={cn(
+            "[mask-image:radial-gradient(430px_circle_at_left,white,transparent)]",
+            "skew-y-6 transform translate-x-1/2"
+          )}
+        />
+        <InteractiveGridPattern
+          width={40}
+          height={37}
+          squares={[51, 51]}
+          className={cn(
+            "[mask-image:radial-gradient(430px_circle_at_right,white,transparent)]",
+            "-skew-y-6 transform -translate-x-1/2"
+          )}
+        />
+      </div>
     </section>
   );
 }

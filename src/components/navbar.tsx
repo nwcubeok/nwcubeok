@@ -39,7 +39,7 @@ const CONTACT_DATA = {
 
 export function Navbar() {
   return (
-    <div className="fixed top-0 left-1/2 -translate-x-1/2">
+    <div className="fixed z-20 top-0 left-1/2 -translate-x-1/2">
       <TooltipProvider>
         <Dock direction="middle">
           {NAVBAR_DATA.map((item) => (

@@ -10,16 +10,14 @@ import Footer from "@/sections/Footer";
 
 export default function Home() {
   return (
+    <>
     <main className="max-w-7xl mx-auto">
-      <DotPattern
-        width={128}
-        height={128}
-      />
       <Navbar/>
       <Hero/>
       <Projects/>
-      <Footer/>
     </main>
+    <Footer/>
+    </>
   );
 }
 

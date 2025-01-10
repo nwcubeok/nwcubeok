@@ -3,7 +3,6 @@ import { ArrowRightIcon, PlayIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { NeonGradientCard } from "@/components/ui/neon-gradient-card";
 
 const BentoGrid = ({
   children,
@@ -15,7 +14,7 @@ const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid w-full auto-rows-[22rem] grid-cols-3 gap-4",
+        "grid w-full h-full grid-cols-3 gap-4",
         className,
       )}
     >
