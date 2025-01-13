@@ -8,7 +8,10 @@ import {InteractiveGridPattern} from "@/components/ui/interactive-grid-pattern";
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-[86vh] relative flex w-full flex-col items-center justify-center overflow-hidden">
+    <section 
+      id="home" 
+      className="flex-shrink-0 h-screen w-screen relative flex flex-col items-center justify-center overflow-hidden"
+    >
       <TextAnimate 
       animation="slideLeft" 
       by="character" 
@@ -21,18 +24,18 @@ const Hero = () => {
       </TextAnimate>
       <div className="absolute flex flex-row items-center justify-center w-full h-screen">
         <InteractiveGridPattern
-          width={40}
+          width={41}
           height={37}
-          squares={[51, 51]}
+          squares={[50, 50]}
           className={cn(
             "[mask-image:radial-gradient(430px_circle_at_left,white,transparent)]",
             "skew-y-6 transform translate-x-1/2"
           )}
         />
         <InteractiveGridPattern
-          width={40}
+          width={40.55}
           height={37}
-          squares={[51, 51]}
+          squares={[50, 50]}
           className={cn(
             "[mask-image:radial-gradient(430px_circle_at_right,white,transparent)]",
             "-skew-y-6 transform -translate-x-1/2"

@@ -37,7 +37,7 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      className="flex flex-col items-center justify-center mt-16"
+      className="flex-shrink-0 h-fit w-screen flex flex-col items-center justify-center mt-16"
     >
       <div className="relative w-full h-full px-8">
         <BentoGrid className="grid-rows-[minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)]">

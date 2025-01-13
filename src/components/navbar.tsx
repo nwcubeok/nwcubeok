@@ -37,7 +37,7 @@ const CONTACT_DATA = {
   },
 };
 
-export function Navbar() {
+export function Navbar({ updateScrollPosition }: { updateScrollPosition: (targetSection: string) => void }) {
   return (
     <div className="fixed z-20 top-0 left-1/2 -translate-x-1/2">
       <TooltipProvider>
@@ -46,16 +46,16 @@ export function Navbar() {
             <DockIcon key={item.label}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link
-                    href={item.href}
+                  <button
                     aria-label={item.label}
+                    onClick={() => updateScrollPosition(item.href)}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
                       "size-12 rounded-full"
                     )}
                   >
                     <item.icon/>
-                  </Link>
+                  </button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{item.label}</p>
@@ -68,16 +68,16 @@ export function Navbar() {
             <DockIcon key={item.label}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link
-                    href={item.href}
+                  <button
                     aria-label={item.label}
+                    onClick={() => updateScrollPosition(item.href)}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
                       "size-12 rounded-full"
                     )}
                   >
                     <item.icon/>
-                  </Link>
+                  </button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{item.label}</p>
@@ -90,8 +90,7 @@ export function Navbar() {
             <DockIcon key={name}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link
-                    href={social.url}
+                  <button
                     aria-label={social.name}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
@@ -99,7 +98,7 @@ export function Navbar() {
                     )}
                   >
                     <social.icon className="size-4" />
-                  </Link>
+                  </button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{name}</p>
