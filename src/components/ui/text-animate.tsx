@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, MotionProps, Variants } from "motion/react";
-import { ElementType } from "react";
+import { ElementType, ReactNode } from "react";
 
 type AnimationType = "text" | "word" | "character" | "line";
 type AnimationVariant =
@@ -19,9 +19,9 @@ type AnimationVariant =
 
 interface TextAnimateProps extends MotionProps {
   /**
-   * The text content to animate
+   * The text content or children to animate
    */
-  children: string;
+  children: ReactNode; // Accept any valid ReactNode, including components
   /**
    * The class name to be applied to the component
    */
@@ -47,7 +47,7 @@ interface TextAnimateProps extends MotionProps {
    */
   as?: ElementType;
   /**
-   * How to split the text ("text", "word", "character")
+   * How to split the text ("text", "word", "character", "line")
    */
   by?: AnimationType;
   /**
@@ -339,21 +339,26 @@ export function TextAnimate({
       }
     : { container: defaultContainerVariants, item: defaultItemVariants };
 
-  let segments: string[] = [];
-  switch (by) {
-    case "word":
-      segments = children.split(/(\s+)/);
-      break;
-    case "character":
-      segments = children.split("");
-      break;
-    case "line":
-      segments = children.split("\n");
-      break;
-    case "text":
-    default:
-      segments = [children];
-      break;
+  let segments: ReactNode[] = [];
+  if (typeof children === "string") {
+    switch (by) {
+      case "word":
+        segments = children.split(/(\s+)/);
+        break;
+      case "character":
+        segments = children.split("");
+        break;
+      case "line":
+        segments = children.split("\n");
+        break;
+      case "text":
+      default:
+        segments = [children];
+        break;
+    }
+  } else {
+    // If children are React components, treat them as a single segment
+    segments = [children];
   }
 
   return (
@@ -369,12 +374,12 @@ export function TextAnimate({
       >
         {segments.map((segment, i) => (
           <motion.span
-            key={`${by}-${segment}-${i}`}
+            key={`${by}-${i}`}
             variants={finalVariants.item}
             custom={i * staggerTimings[by]}
             className={cn(
               by === "line" ? "block" : "inline-block whitespace-pre",
-              segmentClassName,
+              segmentClassName
             )}
           >
             {segment}

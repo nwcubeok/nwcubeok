@@ -9,7 +9,9 @@ import JojoLogo from "@/components/jojo-logo";
 import JojoTitleLogo from "@/components/jojotitle-logo";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
+import { BentoCardProject, BentoGrid } from "@/components/ui/bento-grid";
+
+import Other from "./Other";
 
 const projects = [
   {
@@ -29,7 +31,7 @@ const projects = [
     ),
     classNameTitle: "text-black dark:text-white",
     classNameDescription: "text-black dark:text-white",
-    className: "row-start-1 row-end-3 col-start-1 col-end-4 hover:skew-x-[-2deg] transiton-all duration-300 ease-in-out",
+    className: "row-start-1 row-end-7 col-start-1 col-end-2 hover:skew-x-[-2deg] transiton-all duration-300 ease-in-out",
   },
 ];
 
@@ -37,12 +39,12 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      className="flex-shrink-0 h-fit w-screen flex flex-col items-center justify-center mt-16"
+      className="flex-shrink-0 h-screen w-screen relative flex flex-row items-center justify-center"
     >
-      <div className="relative w-full h-full px-8">
-        <BentoGrid className="grid-rows-[minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)]">
+      <div className="w-full h-fit px-8">
+        <BentoGrid className="grid-rows-[minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)]">
           {projects.map((project) => (
-            <BentoCard key={project.name} {...project} />
+            <BentoCardProject key={project.name} {...project} />
           ))}
           <div
             key={"soon"}
@@ -50,8 +52,8 @@ const Projects = () => {
               "group relative col-span-3 flex flex-col-reverse justify-between overflow-hidden rounded-xl",
               "[box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
               "transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
-              "row-start-3 row-end-4 col-start-1 col-end-4",
-              "hover:skew-x-[-2deg] transiton-all duration-300 ease-in-out"
+              "hover:skew-x-[-2deg] transiton-all duration-300 ease-in-out",
+              "row-start-7 row-end-9 col-start-1 col-end-4"
             )}
           >
             <div className="absolute dark:invert opacity-85 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -65,6 +67,10 @@ const Projects = () => {
           </div>
         </BentoGrid>
       </div>
+      <div>
+
+      </div>
+      <Other/>
     </section>
   );
 };

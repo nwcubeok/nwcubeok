@@ -1,12 +1,15 @@
 "use client"
 
-import React from "react";
-import TypingAnimation from "@/components/ui/typing-animation"; 
+import React from "react"; 
 import { TextAnimate } from "@/components/ui/text-animate";
+import { LineShadowText } from "@/components/ui/line-shadow-text";
 import { cn } from "@/lib/utils";
 import {InteractiveGridPattern} from "@/components/ui/interactive-grid-pattern";
+import { useTheme } from "next-themes";
 
 const Hero = () => {
+  const theme = useTheme();
+  const shadowColor = theme.resolvedTheme === "dark" ? "white" : "black";
   return (
     <section 
       id="home" 
@@ -17,10 +20,13 @@ const Hero = () => {
       by="character" 
       as="h1" 
       className={cn(
-        "z-10 whitespace-pre-wrap font-gasoekone text-6xl text-[#11090f] dark:text-[#f1e8e6]",
+        "z-10 text-balance whitespace-pre-wrap font-gasoekone text-6xl text-[#11090f] dark:text-[#f1e8e6]",
         "pointer-events-none user-select-none"
       )}>
-      nwcubeok
+      
+        <LineShadowText shadowColor={shadowColor}>
+        nwcubeok
+        </LineShadowText>
       </TextAnimate>
       <div className="absolute flex flex-row items-center justify-center w-full h-screen">
         <InteractiveGridPattern
