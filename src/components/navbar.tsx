@@ -51,7 +51,7 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
                     onClick={() => updateScrollPosition(item.href)}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full"
+                      "size-12"
                     )}
                   >
                     <item.icon/>
@@ -73,7 +73,7 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
                     onClick={() => updateScrollPosition(item.href)}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full"
+                      "size-12"
                     )}
                   >
                     <item.icon/>
@@ -94,7 +94,7 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
                     aria-label={social.name}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full"
+                      "size-12"
                     )}
                   >
                     <social.icon className="size-4" />

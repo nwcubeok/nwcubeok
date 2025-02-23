@@ -37,10 +37,7 @@ const projects = [
 
 const Projects = () => {
   return (
-    <section
-      id="projects"
-      className="flex-shrink-0 h-screen w-screen relative flex flex-row items-center justify-center"
-    >
+    <div className="h-screen w-screen">
       <div className="w-full h-fit px-8">
         <BentoGrid className="grid-rows-[minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)]">
           {projects.map((project) => (
@@ -70,8 +67,7 @@ const Projects = () => {
       <div>
 
       </div>
-      <Other/>
-    </section>
+    </div>
   );
 };
 

@@ -18,7 +18,11 @@ export default {
   			gasoekone: [
   				'Gasoek One',
   				'sans-serif'
-  			]
+  			],
+			jersey: [
+				'Jersey 15',
+				'Gasoek One'
+			]
   		},
   		colors: {
   			background: 'hsl(var(--background))',

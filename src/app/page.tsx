@@ -1,80 +1,100 @@
 "use client";
 import React, { useRef, useEffect } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
 
+import PageOverlay from "@/components/page-overlay";
 import Navbar from "@/components/navbar";
 import Hero from "@/sections/Hero";
 import Projects from "@/sections/Projects";
+import Other from "@/sections/Other";
 
 export default function Home() {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const rawScrollX = useMotionValue(0); // Gérer le défilement horizontal brut
-  const smoothScrollX = useSpring(rawScrollX, {
-    stiffness: 100, // Ajustez la rigidité pour un effet plus ou moins réactif
-    damping: 27, // Ajustez l'amortissement pour un mouvement plus ou moins fluide
-  });
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  let maxWidth = 0;
 
-  // Fonction pour mettre à jour la position en fonction de la section
+  // Fonction de navigation vers une section spécifique
   const updateScrollPosition = (href: string) => {
     const sectionWidth = window.innerWidth;
+    let targetX = 0;
 
     if (href === "#home") {
-      rawScrollX.set(0); // Aller à Hero
+      targetX = 0;
     } else if (href === "#projects") {
-      rawScrollX.set(-sectionWidth); // Aller à Projects
+      targetX = -sectionWidth;
     }
+    const targetY = (Math.abs(targetX) / (maxWidth - window.innerWidth)) * maxWidth;
+    console.log("Scrolling to X:", targetX);
+    console.log("Scrolling to Y:", targetY);
+    gsap.to(window, { scrollTo: { y: targetY }, duration: 1 });
+
   };
 
   useEffect(() => {
-    const container = containerRef.current;
+    // Enregistrement des plugins
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-    if (!container) return;
+    // Sélectionne les éléments <section>
+    const sections = gsap.utils.toArray<HTMLElement>("section");
 
-    // Calculer les limites de défilement
-    const sectionWidth = window.innerWidth;
-    const maxScroll = -(sectionWidth * (2 - 1));
-
-    const onWheel = (event: WheelEvent) => {
-      event.preventDefault(); // Empêcher le défilement vertical natif
-      const currentValue = rawScrollX.get();
-      let nextValue = currentValue - event.deltaY;
-
-      // Gestion des limites
-      if (event.deltaY > 0) {
-        if (currentValue > maxScroll) {
-          nextValue = Math.max(nextValue, maxScroll);
-          rawScrollX.set(nextValue);
-        }
-      } else if (event.deltaY < 0) {
-        if (currentValue < 0) {
-          nextValue = Math.min(nextValue, 0);
-          rawScrollX.set(nextValue);
-        }
-      }
+    // Fonction pour calculer la largeur totale
+    const getMaxWidth = () => {
+      maxWidth = 0;
+      sections.forEach((section) => {
+        maxWidth += section.offsetWidth;
+      });
+      console.log("Largeur totale :", maxWidth);
     };
 
-    // Ajouter l'écouteur d'événement
-    container.addEventListener("wheel", onWheel, { passive: false });
+    // Délai pour s'assurer que le layout est prêt
+    setTimeout(() => {
+      getMaxWidth();
+      // Recalcule la largeur lors d'un rafraîchissement (redimensionnement, etc.)
+      ScrollTrigger.addEventListener("refreshInit", getMaxWidth);
 
-    // Nettoyer l'écouteur lors du démontage
-    return () => {
-      container.removeEventListener("wheel", onWheel);
-    };
-  }, [rawScrollX]);
+      // Animation qui translate horizontalement les sections
+      const scrollTween = gsap.to(sections, {
+        x: () => `-${maxWidth - window.innerWidth}`,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          pin: true,
+          scrub: true,
+          end: () => `+=${maxWidth}`,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      sections.forEach((sct, i) => {
+        ScrollTrigger.create({
+          trigger: sct,
+          start: () => 'top top-=' + (sct.offsetLeft - window.innerWidth/2) * (maxWidth / (maxWidth - window.innerWidth)),
+          end: () => '+=' + sct.offsetWidth * (maxWidth / (maxWidth - window.innerWidth)),
+          toggleClass: {targets: sct, className: "active"}
+        });
+      });
+    }, 100);
+
+  }, []);
 
   return (
     <>
+    
       <Navbar updateScrollPosition={updateScrollPosition} />
-      <motion.div
-        ref={containerRef}
-        className="flex h-screen w-max flex-row overflow-hidden snap-mandatory"
-        style={{
-          x: smoothScrollX,
-        }}
+      <div
+        ref={wrapperRef}
+        className="flex flex-nowrap"
       >
-        <Hero />
-        <Projects />
-      </motion.div>
+        <PageOverlay />
+        
+        <section id="home">
+          <Hero />
+        </section>
+        <section id="projects">
+          <Projects />
+        </section>
+      </div>
     </>
   );
 }
