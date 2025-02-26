@@ -21,13 +21,13 @@ const socials = [
 
 const Other = () => {
     return (
-        <section id="other" className="h-full mr-12 py-16">
+        <div id="other" className="h-full mr-12 py-16">
             <BentoGrid className="grid-rows-5 grid-cols-1">
                 {socials.map((social) => (
                     <BentoCardSocial key={social.name} {...social} />
                 ))}
             </BentoGrid>
-        </section>
+        </div>
     );
 };
 

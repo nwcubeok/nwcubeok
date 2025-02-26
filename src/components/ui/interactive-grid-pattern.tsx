@@ -16,6 +16,11 @@ interface InteractiveGridPatternProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
   /** Classes CSS à appliquer sur chaque carré */
   squaresClassName?: string;
+  /**
+   * Objet optionnel pour fixer la couleur de certains carrés.
+   * La clé est l'indice du carré et la valeur la couleur (ex. { "10": "red", "20": "blue" }).
+   */
+  fixedSquares?: { [index: number]: string };
 }
 
 export function InteractiveGridPattern({
@@ -26,23 +31,21 @@ export function InteractiveGridPattern({
   thickness = 1,
   className,
   squaresClassName,
+  fixedSquares,
   ...props
 }: InteractiveGridPatternProps) {
-  // Décomposition de la grille en nombre de colonnes et lignes
+  // Décomposition de la grille en colonnes et lignes
   const [horizontal, vertical] = squares;
-  // Pour chaque case (par son index), on stocke le timestamp de son dernier survol
+  // Stocke pour chaque case le timestamp de son dernier survol
   const [hoverTimes, setHoverTimes] = useState<{ [index: number]: number }>({});
   // Temps courant (pour le calcul de l'estompage)
   const [currentTime, setCurrentTime] = useState(Date.now());
 
-  // Référence qui stocke la position actuelle de la souris dans le SVG
+  // Références pour la position de la souris et le dernier point traité
   const currentMousePosRef = useRef<{ x: number; y: number } | null>(null);
-  // Référence qui stocke le dernier point traité dans la boucle d'animation
   const lastUpdatedPosRef = useRef<{ x: number; y: number } | null>(null);
 
-  // Boucle d'animation qui se déclenche en continu pour :
-  // - Mettre à jour le temps courant (pour l'estompage)
-  // - Calculer et tracer la ligne entre le dernier point traité et la position actuelle de la souris
+  // Boucle d'animation pour mettre à jour currentTime et tracer la case sous la souris
   useEffect(() => {
     let animationFrame: number;
     const tick = () => {
@@ -50,15 +53,14 @@ export function InteractiveGridPattern({
 
       if (currentMousePosRef.current) {
         const pos = currentMousePosRef.current;
-
         if (!lastUpdatedPosRef.current) {
-          // Première position : on met à jour la cellule correspondante
+          // Première position : on met à jour la case correspondante
           const col = Math.floor(pos.x / width);
           const row = Math.floor(pos.y / height);
           const newIndex = row * horizontal + col;
           updateHoveredSquares([newIndex]);
         } else {
-          // Calcul de la ligne entre le dernier point traité et la position actuelle
+          // Calculer la ligne entre le dernier point traité et la position actuelle
           const lastPos = lastUpdatedPosRef.current;
           const colOld = Math.floor(lastPos.x / width);
           const rowOld = Math.floor(lastPos.y / height);
@@ -67,7 +69,7 @@ export function InteractiveGridPattern({
           const indices = getLineIndices(colOld, rowOld, colNew, rowNew, horizontal);
           updateHoveredSquares(indices);
         }
-        // Mettre à jour le dernier point traité pour la prochaine frame
+        // Mettre à jour le dernier point traité
         lastUpdatedPosRef.current = pos;
       }
 
@@ -76,9 +78,9 @@ export function InteractiveGridPattern({
 
     animationFrame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animationFrame);
-  }, [width, horizontal, vertical]);
+  }, [width, horizontal, vertical, fixedSquares]);
 
-  // Lors d'un mousemove, on met à jour la position actuelle de la souris
+  // Mise à jour de la position de la souris dans le SVG
   const handleMouseMove = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     const svg = event.currentTarget;
     const rect = svg.getBoundingClientRect();
@@ -87,26 +89,28 @@ export function InteractiveGridPattern({
     currentMousePosRef.current = { x, y };
   };
 
-  // À la sortie du SVG, on réinitialise les références
+  // Réinitialisation lors du départ de la souris
   const handleMouseLeave = () => {
     currentMousePosRef.current = null;
     lastUpdatedPosRef.current = null;
   };
 
   /**
-   * Met à jour le timestamp de survol pour chaque case (ou groupe de cases
-   * si une épaisseur est appliquée) afin de gérer l'estompage.
-   *
-   * @param indices Tableau d'indices de cases à mettre à jour
+   * Met à jour le timestamp pour chaque case (ou groupe de cases si thickness > 1)
+   * sauf pour les cases fixées (définies dans fixedSquares).
    */
   const updateHoveredSquares = (indices: number[]) => {
     setHoverTimes((prev) => {
       const newTimes = { ...prev };
       const now = Date.now();
       indices.forEach((idx) => {
+        // Si cette case est fixée, ne pas la modifier
+        if (fixedSquares && fixedSquares[idx] !== undefined) return;
         if (thickness > 1) {
           const thickIndices = getThickIndices(idx, thickness, horizontal, vertical);
           thickIndices.forEach((tIdx) => {
+            // On ne modifie pas une case fixée
+            if (fixedSquares && fixedSquares[tIdx] !== undefined) return;
             newTimes[tIdx] = now;
           });
         } else {
@@ -118,14 +122,7 @@ export function InteractiveGridPattern({
   };
 
   /**
-   * Algorithme de Bresenham pour obtenir les indices des cases situées entre deux points.
-   *
-   * @param x0 Colonne de départ
-   * @param y0 Ligne de départ
-   * @param x1 Colonne d'arrivée
-   * @param y1 Ligne d'arrivée
-   * @param gridWidth Nombre de colonnes dans la grille
-   * @returns Tableau d'indices correspondant aux cases traversées
+   * Algorithme de Bresenham pour récupérer les indices des cases entre deux points (en coordonnées de grille)
    */
   function getLineIndices(
     x0: number,
@@ -159,14 +156,7 @@ export function InteractiveGridPattern({
   }
 
   /**
-   * Renvoie les indices "épais" autour d'une case.
-   * Pour un index donné, on remplit les cases voisines en fonction de l'épaisseur.
-   *
-   * @param index Index de la case centrale
-   * @param thickness Épaisseur désirée (>= 1)
-   * @param gridWidth Nombre de colonnes dans la grille
-   * @param gridHeight Nombre de lignes dans la grille
-   * @returns Tableau d'indices correspondant à la zone élargie
+   * Retourne les indices "épais" autour d'une case.
    */
   const getThickIndices = (
     index: number,
@@ -194,22 +184,28 @@ export function InteractiveGridPattern({
     <svg
       width={width * horizontal}
       height={height * vertical}
-      className={cn("absolute inset-0 h-full w-full border border-gray-400/30", className)}
+      className={cn("absolute inset-0 h-full w-full", className)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       {...props}
     >
       {Array.from({ length: horizontal * vertical }).map((_, index) => {
-        // Calcul de la position de la case dans le SVG
         const xPos = (index % horizontal) * width;
         const yPos = Math.floor(index / horizontal) * height;
-        // Calcul de l'opacité en fonction du temps écoulé depuis le dernier survol
         const hoverTime = hoverTimes[index];
         let opacity = 0;
         if (hoverTime) {
           const delta = currentTime - hoverTime;
           opacity = Math.max(0, 1 - delta / fadeDuration);
         }
+        // Si la case est fixée, utilisez la couleur fixe, sinon la couleur calculée
+        const fillColor =
+          fixedSquares && fixedSquares[index] !== undefined
+            ? fixedSquares[index]
+            : opacity > 0
+            ? `rgba(107, 114, 128, ${opacity})`
+            : "transparent";
+
         return (
           <rect
             key={index}
@@ -218,8 +214,8 @@ export function InteractiveGridPattern({
             width={width}
             height={height}
             style={{
-              fill: opacity > 0 ? `rgba(107, 114, 128, ${opacity})` : "transparent",
-              transition: "fill 0.1s ease-in-out",
+              fill: fillColor,
+              transition: "fill 0.5s ease-out",
             }}
             className={cn("stroke-gray-400/5", squaresClassName)}
           />

@@ -1,5 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Gasoek+One&family=Jersey+15&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap')
 layer(base);
+
+@font-face {
+  font-family: 'Jersey 15';
+  src: url("fonts/Jersey15-Regular.ttf") format("truetype");
+  font-display: swap;
+}
 
 @import 'tailwindcss';
 
@@ -10,7 +16,7 @@ layer(base);
 @theme {
   --font-generalsans: General Sans, sans-serif;
   --font-gasoekone: Gasoek One, sans-serif;
-  --font-jersey: Jersey 15, Gasoek One;
+  --font-jersey: 'Jersey 15', Gasoek One;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -70,6 +76,7 @@ layer(base);
       background-position: bottom center;
     }
   }
+  
 }
 
 /*
@@ -109,8 +116,8 @@ layer(base);
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 315 31% 5%;
+    --primary-foreground: 11 28% 92%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
@@ -139,8 +146,8 @@ layer(base);
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 11 28% 92%;
+    --primary-foreground: 315 31% 5%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -160,6 +167,7 @@ layer(base);
     --scrollbar-main: 220 85.4% 48.2%;
     --light-gold-rgb: rgb(247, 213, 60); 
     --dark-gold-rgb: rgb(153, 145, 74);
+    --question-mark: 
   }
 }
 

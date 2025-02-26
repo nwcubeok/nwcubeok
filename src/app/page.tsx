@@ -12,23 +12,40 @@ import Other from "@/sections/Other";
 
 export default function Home() {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  let maxWidth = 0;
+  let maxWidth : number;
 
   // Fonction de navigation vers une section spécifique
   const updateScrollPosition = (href: string) => {
+  
     const sectionWidth = window.innerWidth;
     let targetX = 0;
-
-    if (href === "#home") {
-      targetX = 0;
-    } else if (href === "#projects") {
-      targetX = -sectionWidth;
-    }
+  
+    if (href === "#home") targetX = 0;
+    else if (href === "#projects") targetX = -sectionWidth;
+    
     const targetY = (Math.abs(targetX) / (maxWidth - window.innerWidth)) * maxWidth;
     console.log("Scrolling to X:", targetX);
     console.log("Scrolling to Y:", targetY);
-    gsap.to(window, { scrollTo: { y: targetY }, duration: 1 });
-
+    console.log(window.scrollY)
+    console.log(maxWidth)
+    
+    // Si on se trouve deja sur la section on ne fait rien
+    if (window.scrollY === targetY) return;
+    else {
+      // Désactive le scroll en cachant le débordement du body
+      document.body.style.overflow = 'hidden';
+      console.log("go")
+  
+      gsap.to(window, { 
+        scrollTo: { y: targetY }, 
+        duration: 1.2, 
+        ease: "power2.out",
+        onComplete: () => {
+          // Réactive le scroll une fois l'animation terminée
+          document.body.style.overflow = '';
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -82,16 +99,21 @@ export default function Home() {
     <>
     
       <Navbar updateScrollPosition={updateScrollPosition} />
+
+
       <div
         ref={wrapperRef}
         className="flex flex-nowrap"
       >
-        <PageOverlay />
+        <div className="z-0 pointer-events-auto">
+          <PageOverlay />
+
+        </div>
         
-        <section id="home">
+        <section id="home" className="pointer-events-none">
           <Hero />
         </section>
-        <section id="projects">
+        <section id="projects" className="pointer-events-none">
           <Projects />
         </section>
       </div>
