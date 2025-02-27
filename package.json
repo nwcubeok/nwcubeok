@@ -19,7 +19,7 @@
     "framer-motion": "^10.18.0",
     "gsap": "^3.12.7",
     "lucide-react": "^0.462.0",
-    "motion": "^11.17.0",
+    "motion": "^11.18.2",
     "next": "^15.1.4",
     "next-themes": "^0.4.3",
     "react": "^18.2.0",

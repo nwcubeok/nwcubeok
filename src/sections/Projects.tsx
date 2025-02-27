@@ -25,7 +25,7 @@ const projects = [
     classNameTitle: "text-primary",
     classNameDescription: "text-primary",
     className:
-      "row-start-1 row-end-4 col-start-1 col-end-2",
+      "row-start-1 row-end-7 col-start-1 col-end-2",
   },
   {
     Icon: () => <Box width={48} height={48} />,
@@ -45,7 +45,7 @@ const projects = [
     classNameTitle: "text-green-400",
     classNameDescription: "text-green-400",
     className:
-      "row-start-4 row-end-7 col-start-1 col-end-2",
+      "row-start-1 row-end-7 col-start-2 col-end-3",
   },
   {
     Icon: () => <Bomb width={48} height={48} />,
@@ -65,7 +65,7 @@ const projects = [
     classNameTitle: "text-red-400",
     classNameDescription: "text-red-400",
     className:
-      "row-start-1 row-end-4 col-start-2 col-end-3",
+      "row-start-1 row-end-7 col-start-3 col-end-4",
   },
 ];
 
@@ -74,23 +74,14 @@ const Projects = () => {
 
   return (
     <div className="h-screen w-screen">
-      <div className="flex flex-row gap-10 h-full w-full">
-        <div className="w-[90%] h-full p-7 font-jersey">
+      <div className="flex flex-row h-full w-full p-7">
+        <div className="w-[90%] h-full font-jersey">
           <BentoGrid className={cn(
             "grid-rows-[minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)_minmax(6rem,1fr)]",
-            "p-5"
+            "p-8"
           )}>
             {projects.map((project) => (
               <BentoCardProject key={project.name} {...project} />
-            ))}
-            {Array.from({ length: blankCardNumber }).map((_, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "border-gray-500 rounded-xl",
-                  "row-start-4 row-end-7 col-start-2 col-end-3"
-                )}
-              ></div>
             ))}
             <div
               key={"soon"}
@@ -98,11 +89,10 @@ const Projects = () => {
                 "group relative col-span-3 flex flex-col-reverse justify-between overflow-hidden",
                 "[box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
                 "transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
-                "hover:skew-x-[-2deg] transiton-all duration-300 ease-in-out",
                 "row-start-7 row-end-9 col-start-1 col-end-4"
               )}
             >
-              <div className="absolute w-full top-1/2 -translate-y-1/2">
+              <div className="group-hover:rotate-180 duration-200 ease-in-out absolute w-full top-1/2 -translate-y-1/2">
                 <div className="flex flex-row justify-around">
                   {Array.from({ length: 5 }).map((_, index) => (
                     <div

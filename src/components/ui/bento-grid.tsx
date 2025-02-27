@@ -3,6 +3,7 @@ import { ArrowRightIcon, PlayIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Pointer } from "@/components/ui/pointer";
 import { TiltWrapper } from "../tilt-wrapper";
 
 const BentoGrid = ({
@@ -57,6 +58,7 @@ const BentoCardProject = ({
     )}
     maxRotation={7}
   >
+    <div>
     <div className="absolute inset-0 z-0">{background}</div>
     <div className="relative z-10 pointer-events-none flex transform-gpu flex-row gap-4 p-4 transition-all duration-300 group-hover:-translate-y-10">
       <Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
@@ -94,6 +96,7 @@ const BentoCardProject = ({
       </Button>
     </div>
     <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] dark:group-hover:bg-neutral-800/10" />
+    </div>
   </TiltWrapper>
 );
 
