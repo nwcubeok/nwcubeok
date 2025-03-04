@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { motion as m } from "framer-motion"
 
@@ -71,7 +70,7 @@ export default function ModeToggle() {
   return (
     <Button 
       variant="ghost" 
-      className="border transition-all duration-200 hover:scale-110"
+      className="border bg-background transition-all duration-200 hover:scale-110 hover:cursor-pointer"
       size="icon" 
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       

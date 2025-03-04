@@ -179,6 +179,7 @@ export function InteractiveGridPattern({
     }
     return indices;
   };
+  
 
   return (
     <svg
@@ -203,7 +204,7 @@ export function InteractiveGridPattern({
           fixedSquares && fixedSquares[index] !== undefined
             ? fixedSquares[index]
             : opacity > 0
-            ? `rgba(107, 114, 128, ${opacity})`
+            ? `hsl(var(--dot-color) / ${opacity})`
             : "transparent";
 
         return (

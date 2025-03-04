@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
@@ -8,36 +8,40 @@ import PageOverlay from "@/components/page-overlay";
 import Navbar from "@/components/navbar";
 import Hero from "@/sections/Hero";
 import Projects from "@/sections/Projects";
-import Other from "@/sections/Other";
 
 export default function Home() {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  let maxWidth: number;
+  let maxWidth = 0;
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Détection mobile (par exemple, largeur < 768px)
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   // Fonction de navigation vers une section spécifique
   const updateScrollPosition = (href: string) => {
+    if (isMobile) {
+      // Sur mobile, on effectue un scroll vertical normal
+      const section = document.querySelector(href);
+      section?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
     const sectionWidth = window.innerWidth;
     let targetX = 0;
-
     if (href === "#home") targetX = 0;
     else if (href === "#projects") targetX = -sectionWidth;
-
-    const targetY =
-      (Math.abs(targetX) / (maxWidth - window.innerWidth)) * maxWidth;
+    const targetY = (Math.abs(targetX) / (maxWidth - window.innerWidth)) * maxWidth;
     console.log("Scrolling to X:", targetX);
     console.log("Scrolling to Y:", targetY);
-
-    // Si on se trouve déjà sur la section, on ne fait rien
     if (window.scrollY === targetY) return;
     else {
-      // Désactive le scroll en cachant le débordement du body
       document.body.style.overflow = "hidden";
       gsap.to(window, {
         scrollTo: { y: targetY },
         duration: 1.2,
         ease: "power2.out",
         onComplete: () => {
-          // Réactive le scroll une fois l'animation terminée
           document.body.style.overflow = "";
         },
       });
@@ -45,12 +49,9 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (isMobile) return; // Sur mobile, on n'initialise pas le scroll horizontal.
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-    // Sélectionne les éléments <section>
     const sections = gsap.utils.toArray<HTMLElement>("section");
-
-    // Calcule la largeur totale des sections (horizontalement)
     const getMaxWidth = () => {
       maxWidth = 0;
       sections.forEach((section) => {
@@ -63,7 +64,7 @@ export default function Home() {
       getMaxWidth();
       ScrollTrigger.addEventListener("refreshInit", getMaxWidth);
 
-      // Tween horizontal des sections avec snapping via ScrollTrigger
+      // Animation horizontale des sections avec ScrollTrigger
       gsap.to(sections, {
         x: () => `-${maxWidth - window.innerWidth}`,
         ease: "none",
@@ -73,9 +74,8 @@ export default function Home() {
           scrub: true,
           end: () => `+=${maxWidth}`,
           invalidateOnRefresh: true,
-          // Snap horizontal : divise la progression en incréments
           snap: {
-            snapTo: 1 / (sections.length - 1), // Pour 2 sections, snapping à 0 et 1 (progress)
+            snapTo: 1 / (sections.length - 1),
             duration: { min: 0.2, max: 0.5 },
             delay: 0.1,
             ease: "power1.inOut",
@@ -83,8 +83,7 @@ export default function Home() {
         },
       });
 
-      // Pour chaque section, crée un ScrollTrigger qui ajoute la classe "active"
-      sections.forEach((sct, i) => {
+      sections.forEach((sct) => {
         ScrollTrigger.create({
           trigger: sct,
           start: () =>
@@ -98,21 +97,23 @@ export default function Home() {
         });
       });
     }, 100);
-  }, []);
+  }, [isMobile]);
 
   return (
     <>
       <Navbar updateScrollPosition={updateScrollPosition} />
+      <div
+        ref={wrapperRef}
+        className={"flex flex-nowrap"}
+      >
+        <div className="fixed">
+        <PageOverlay />
 
-      <div ref={wrapperRef} className="flex flex-nowrap">
-        <div className="z-0 pointer-events-auto">
-          <PageOverlay />
         </div>
-
-        <section id="home">
+        <section id="home" className={isMobile ? "" : "pointer-events-none"}>
           <Hero />
         </section>
-        <section id="projects">
+        <section id="projects" className={isMobile ? "" : "pointer-events-none"}>
           <Projects />
         </section>
       </div>

@@ -22,27 +22,26 @@ const Hero = () => {
   const shadowColor = resolvedTheme === "dark" ? "white" : "black";
 
   return (
-    <section className="h-screen w-screen pointer-events-none">
+    <section className="h-screen w-screen">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-      <div className=
-            "flex text-balance whitespace-pre-wrap font-jersey text-9xl text-primary">
+        <div className="flex text-balance whitespace-pre-wrap font-jersey md:text-9xl text-7xl text-primary">
           {name.split("").map((char, index) => (
-        <TextAnimate
-          key={index}
-          animation="slideLeft"
-          as="h1"
-          delay={index * 0.08}
-          className={cn(
-          )}
-        >
-            <span key={index} className="transition-transform hover:scale-110">
-              <LineShadowText shadowColor={shadowColor}>
-                {char}
-              </LineShadowText>
-            </span>
-        </TextAnimate>
+            <TextAnimate
+              key={index}
+              animation="slideLeft"
+              as="h1"
+              delay={index * 0.08}
+              className={cn(
+              )}
+            >
+              <span key={index} className="transition-transform hover:scale-110">
+                <LineShadowText shadowColor={shadowColor}>
+                  {char}
+                </LineShadowText>
+              </span>
+            </TextAnimate>
           ))}
-          </div>
+        </div>
       </div>
     </section>
   );

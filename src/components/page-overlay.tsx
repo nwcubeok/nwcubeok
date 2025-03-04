@@ -18,12 +18,10 @@ const PageOverlay = () => {
 
     return (
 
-        <div className="absolute w-screen h-screen z-50">
+        <div className="fixed w-screen h-screen">
             <InteractiveGridPattern
-                width={37}
-                height={37}
                 squares={[50, 50]}
-                className={"h-full w-full"}
+                className={"h-full w-full z-0"}
                 //fixedSquares={{"597" : color, "648" : color, "697" : color}}
             />
         </div>

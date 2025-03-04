@@ -60,21 +60,6 @@ const BentoCardProject = ({
   >
     <div>
     <div className="absolute inset-0 z-0">{background}</div>
-    <div className="relative z-10 pointer-events-none flex transform-gpu flex-row gap-4 p-4 transition-all duration-300 group-hover:-translate-y-10">
-      <Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
-      <div>
-        <h3 className={cn(
-          "text-xl font-semibold text-neutral-700 dark:text-neutral-300",
-          classNameTitle
-        )}>
-          {name}
-        </h3>
-        <p className={cn(
-          "max-w-lg text-neutral-400",
-          classNameDescription
-        )}>{description}</p>
-      </div>
-    </div>
 
     {LargeLogo && (
     <div className="absolute top-1/2 right-8 z-20 -translate-y-1/2 opacity-40 pointer-events-none group-hover:opacity-60 transition-opacity duration-300">
@@ -82,20 +67,39 @@ const BentoCardProject = ({
     </div>
     )}
 
+    <div className="relative bg-background/30 dark:bg-background/40 pb-11 translate-y-8 group-hover:-translate-y-0 transition-all duration-300">
+      <div className="z-10 pointer-events-none flex items-center transform-gpu flex-row gap-4 p-4 transition-all duration-300 ">
+        <Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+        <div>
+          <h3 className={cn(
+            "text-[1.7rem] font-[500] leading-8 tracking-normal text-neutral-700 dark:text-neutral-300",
+            classNameTitle
+          )}>
+            {name}
+          </h3>
+          <p className={cn(
+            "max-w-lg tracking-wide text-neutral-400",
+            classNameDescription
+          )}>{description}</p>
+        </div>
+      </div>
 
-    <div
-      className={cn(
-        "pointer-events-none absolute bottom-0 flex w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100",
-      )}
-    >
-      <Button variant="ghost" asChild size="sm" className="pointer-events-auto">
-        <a href={href}>
-          {cta}
-          <PlayIcon className="ml-2 h-4 w-4" />
-        </a>
-      </Button>
+
+      <div
+        className={cn(
+          "pointer-events-none absolute bottom-0 flex flex-row items-center w-full transform-gpu p-4 opacity-0 transition-all duration-300 group-hover:opacity-100",
+        )}
+      >
+        <Button variant="ghost" asChild size="sm" className="text-lg hover:bg-background w-full pointer-events-auto">
+          <a href={href}>
+            {cta}
+            <PlayIcon className="ml-2 h-4 w-4" />
+          </a>
+        </Button>
+      </div>
     </div>
-    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] dark:group-hover:bg-neutral-800/10" />
+  
+    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/5 dark:group-hover:bg-neutral-800/10" />
     </div>
   </TiltWrapper>
 );

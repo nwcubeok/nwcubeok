@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { HomeIcon, GithubIcon } from "lucide-react";
+import { HomeIcon, GithubIcon, Bomb } from "lucide-react";
 import JojoLogo from "@/components/jojo-logo";
 
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ const Icons = {
   home: HomeIcon,
   github: GithubIcon,
   jojo: JojoLogo,
+  bomb: Bomb,
 };
 
 const NAVBAR_DATA = [
@@ -25,13 +26,14 @@ const NAVBAR_DATA = [
 
 const PROJECTS_DATA = [
   { href: "#projects", icon: Icons.jojo, label: "Jojodle" },
+  { href: "#projects", icon: Icons.bomb, label: "Minesweeper" },
 ]
 
 const CONTACT_DATA = {
   social: {
     GitHub: {
       name: "GitHub",
-      url: "#",
+      url: "https://github.com/nwcubeok",
       icon: Icons.github, 
     },
   },
@@ -51,7 +53,7 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
                     onClick={() => updateScrollPosition(item.href)}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12"
+                      "size-12 hover:cursor-pointer"
                     )}
                   >
                     <item.icon/>
@@ -73,7 +75,7 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
                     onClick={() => updateScrollPosition(item.href)}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12"
+                      "size-12 hover:cursor-pointer"
                     )}
                   >
                     <item.icon/>
@@ -90,15 +92,16 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
             <DockIcon key={name}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button
+                  <a
+                    href={social.url} target="_blank" rel="noreferrer"
                     aria-label={social.name}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12"
+                      "size-12 hover:cursor-pointer"
                     )}
                   >
                     <social.icon className="size-4" />
-                  </button>
+                  </a>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{name}</p>

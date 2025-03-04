@@ -68,14 +68,6 @@ layer(base);
       background-position: 100% 100%;
     }
   }
-  @keyframes background-position-spin {
-    0% {
-      background-position: top center;
-    }
-    100% {
-      background-position: bottom center;
-    }
-  }
 
 }
 
@@ -118,6 +110,7 @@ layer(base);
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 315 31% 5%;
     --primary-foreground: 11 28% 92%;
+    --primary-gradient: 315 7% 12%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
@@ -136,8 +129,9 @@ layer(base);
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
     --scrollbar-main: 220 7.7% 84.7%;
-    --light-gold-rgb: rgb(198, 85, 212);
-    --dark-gold-rgb: rgb(118, 25, 131);
+    --jojodle-1: rgb(146, 86, 202);
+    --jojodle-2: rgb(100, 35, 126);
+    --dot-color: 0 0% 67%;
   }
   .dark {
     --background: 242 32% 7%;
@@ -148,6 +142,7 @@ layer(base);
     --popover-foreground: 210 40% 98%;
     --primary: 11 28% 92%;
     --primary-foreground: 315 31% 5%;
+    --primary-gradient: 300 2% 67%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -165,9 +160,15 @@ layer(base);
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --scrollbar-main: 220 85.4% 48.2%;
-    --light-gold-rgb: rgb(247, 213, 60); 
-    --dark-gold-rgb: rgb(153, 145, 74);
-    --question-mark: 
+    --jojodle-1: rgb(129, 78, 177);
+    --jojodle-2: rgb(70, 28, 87);
+    --dot-color: 0 0% 37%;
+  }
+}
+
+@layer utilities {
+  *::-webkit-scrollbar {
+    width: 0px;
   }
 }
 
@@ -178,6 +179,28 @@ layer(base);
   body {
     @apply bg-background text-foreground;
 
+  }
+}
+
+@keyframes gridPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+}
+
+@keyframes explosion {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
   }
 }
 
@@ -193,3 +216,4 @@ layer(base);
     @apply bg-background text-foreground;
   }
 }
+
