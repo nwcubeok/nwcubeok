@@ -1,21 +1,107 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap')
+layer(base);
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+@font-face {
+  font-family: 'Jersey 15';
+  src: url("fonts/Jersey15-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-generalsans: General Sans, sans-serif;
+  --font-gasoekone: Gasoek One, sans-serif;
+  --font-jersey: 'Jersey 15', Gasoek One;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-pan: pan 140s linear infinite;
+  --animate-background-position-spin: background-position-spin 3000ms infinite
+    alternate;
+
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 11 9% 92.4%;
+    --dot-color: 313 0% 50% / 0.2;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 315 31% 5%;
+    --primary-foreground: 11 28% 92%;
+    --primary-gradient: 315 7% 12%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
@@ -24,7 +110,7 @@ body {
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
+    --border: 305 16.7% 28.2%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --chart-1: 12 76% 61%;
@@ -33,16 +119,21 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --scrollbar-main: 220 7.7% 84.7%;
+    --jojodle-1: rgb(146, 86, 202);
+    --jojodle-2: rgb(100, 35, 126);
+    --dot-color: 0 0% 67%;
   }
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 242 32% 7%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 11 28% 92%;
+    --primary-foreground: 315 31% 5%;
+    --primary-gradient: 300 2% 67%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -51,7 +142,7 @@ body {
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
+    --border: 316 28.9% 14.9%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
     --chart-1: 220 70% 50%;
@@ -59,6 +150,16 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --scrollbar-main: 220 85.4% 48.2%;
+    --jojodle-1: rgb(129, 78, 177);
+    --jojodle-2: rgb(70, 28, 87);
+    --dot-color: 0 0% 37%;
+  }
+}
+
+@layer utilities {
+  *::-webkit-scrollbar {
+    width: 0px;
   }
 }
 
@@ -68,5 +169,52 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+
   }
 }
+
+@keyframes pan {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+
+@keyframes gridPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+}
+
+@keyframes explosion {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/*
+  ---break---
+*/
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
