@@ -70,7 +70,7 @@ export default function ModeToggle() {
   return (
     <Button 
       variant="ghost" 
-      className="border bg-background transition-all duration-200 hover:scale-110 hover:cursor-pointer"
+      className="border bg-background transition-all duration-200 md:hover:scale-110 hover:cursor-pointer"
       size="icon" 
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       

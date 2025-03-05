@@ -12,9 +12,9 @@ import Projects from "@/sections/Projects";
 export default function Home() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   let maxWidth = 0;
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
-  // Détection mobile (par exemple, largeur < 768px)
+  // Détecte si l'appareil est mobile (ici, largeur < 768px)
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
   }, []);
@@ -22,9 +22,6 @@ export default function Home() {
   // Fonction de navigation vers une section spécifique
   const updateScrollPosition = (href: string) => {
     if (isMobile) {
-      // Sur mobile, on effectue un scroll vertical normal
-      const section = document.querySelector(href);
-      section?.scrollIntoView({ behavior: "smooth" });
       return;
     }
     const sectionWidth = window.innerWidth;
@@ -49,7 +46,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (isMobile) return; // Sur mobile, on n'initialise pas le scroll horizontal.
+    if (isMobile) return; // Sur mobile, on ne configure pas le scroll horizontal.
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     const sections = gsap.utils.toArray<HTMLElement>("section");
     const getMaxWidth = () => {
@@ -64,7 +61,7 @@ export default function Home() {
       getMaxWidth();
       ScrollTrigger.addEventListener("refreshInit", getMaxWidth);
 
-      // Animation horizontale des sections avec ScrollTrigger
+      // Tween horizontal des sections avec ScrollTrigger
       gsap.to(sections, {
         x: () => `-${maxWidth - window.innerWidth}`,
         ease: "none",
@@ -91,8 +88,7 @@ export default function Home() {
             (sct.offsetLeft - window.innerWidth / 2) *
               (maxWidth / (maxWidth - window.innerWidth)),
           end: () =>
-            "+=" +
-            sct.offsetWidth * (maxWidth / (maxWidth - window.innerWidth)),
+            "+=" + sct.offsetWidth * (maxWidth / (maxWidth - window.innerWidth)),
           toggleClass: { targets: sct, className: "active" },
         });
       });
@@ -102,18 +98,18 @@ export default function Home() {
   return (
     <>
       <Navbar updateScrollPosition={updateScrollPosition} />
+
       <div
         ref={wrapperRef}
-        className={"flex flex-nowrap"}
+        className={isMobile ? "block" : "flex flex-nowrap"}
       >
-        <div className="fixed">
-        <PageOverlay />
-
+        <div className="fixed z-0 pointer-events-auto">
+          <PageOverlay />
         </div>
-        <section id="home" className={isMobile ? "" : "pointer-events-none"}>
+        <section id="home" className={"pointer-events-none"}>
           <Hero />
         </section>
-        <section id="projects" className={isMobile ? "" : "pointer-events-none"}>
+        <section id="projects" className={"pointer-events-none"}>
           <Projects />
         </section>
       </div>

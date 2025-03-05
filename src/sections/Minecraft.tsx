@@ -1,11 +1,13 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+//import ExportedImage from "next-image-export-optimizer";
 import { X, ArrowLeft } from "lucide-react";
 
 import { minecraft_builds } from '@/constants/index.js';
 import PageOverlay from '@/components/page-overlay';
-import Navbar from '@/components/navbar';
 import ModeToggle from '@/components/mode-toggle';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface ImageModalProps {
   src: string;
@@ -24,7 +26,7 @@ const Minecraft: React.FC = () => {
       aria-modal="true"
       onClick={onClose}
     >
-      <div onClick={(e) => e.stopPropagation()}>
+      <div onClick={(e) => e.stopPropagation()} className="relative inline-block">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-white text-3xl font-bold focus:outline-none hover:scale-110 hover:cursor-pointer transition-all duration-200 ease-in-out"
@@ -32,10 +34,13 @@ const Minecraft: React.FC = () => {
         >
           <X />
         </button>
-        <img
+        <Image
           src={src}
           alt="Agrandissement"
-          className="max-w-screen max-h-screen"
+          className="block max-w-screen max-h-screen"
+          width={1980}
+          height={1080}
+          loader={() => src}
         />
       </div>
     </div>
@@ -68,14 +73,14 @@ const Minecraft: React.FC = () => {
   }, [isModalOpen]);
 
   return (
-    <section id="minecraft" className="section-container my-20 text-primary">
-      <div className="z-0">
-        <div className="fixed z-100 inset-x-10 top-10 flex flex-row justify-between pointer-events-none">
+    <div id="minecraft" className="w-screen overflow-x-hidden">
+      <div className="z-0 text-primary">
+        <div className="fixed z-100 md:inset-x-10 inset-x-4 top-10 flex flex-row justify-between pointer-events-none">
           { !isModalOpen &&
           <>
-            <a href='/' className="pointer-events-auto hover:cursor-pointer hover:scale-110 transition-all duration-200">
-              <ArrowLeft className="mix-blend-difference size-8" />  
-            </a>
+            <Link href='/' className="pointer-events-auto hover:cursor-pointer hover:scale-110 transition-all duration-200">
+              <ArrowLeft className="mix-blend-difference md:size-8 size-7" />  
+            </Link>
             <div className="pointer-events-auto">
               <ModeToggle/>
             </div>
@@ -88,52 +93,55 @@ const Minecraft: React.FC = () => {
         </div>
       </div>
 
-      <div className="relative z-50 pointer-events-none">
-        <div className="max-w-7xl mx-14">
-          <div className="flex items-center gap-5 mb-10">
-            <img
-              src="minecraft-icon.png"
-              className="h-16"
-              alt="Minecraft Icon"
-            />
-            <h1 className="text-5xl font-gasoekone bg-gradient-to-r dark:from-slate-200 dark:to-slate-400 from-slate-900 to-slate-700 bg-clip-text text-transparent">
-              Projets Minecraft
-            </h1>
-          </div>
+      <div className="relative max-w-full sm:max-w-7xl mx-auto md:my-20 my-5 px-6 z-50 pointer-events-none">
+
+        <div className="flex items-center md:gap-5 gap-3 md:mb-10 mb-8">
+          <Image
+            src="minecraft-icon.png"
+            className="size-16 md:block hidden"
+            alt="Minecraft Icon"
+            width={64}
+            height={64}
+            loader={() => "/minecraft-icon.png"}
+          />
+          <h1 className="md:text-5xl text-4xl md:text-left text-center font-gasoekone bg-gradient-to-r dark:from-slate-200 dark:to-slate-400 from-slate-900 to-slate-700 bg-clip-text text-transparent">
+            Projets Minecraft
+          </h1>
+        </div>
+        <div className="flex flex-col gap-4 md:text-base text-sm">
           <p>
-            Ces constructions proviennent de projets solo et en groupe entre 2019
-            et aujourd'hui, sur des serveurs créatifs (lifecraft, hyparia...) et des
-            serveurs privés.
+            {"Ces constructions proviennent de projets solo et en groupe entre 2019 et aujourd'hui, sur des serveurs créatifs (lifecraft, hyparia...) et des serveurs privés."}
           </p>
           <p>
-            Tous mes projets ne sont pas encore présents ici, car je n'ai pas toujours
-            pensé à les prendre en screenshot pendant leur construction. Je continue
-            de les chercher pour mettre à jour cette section.
+            {"Tous mes projets ne sont pas encore présents ici. Cette page sera mise à jour à chaque nouvelle trouvaille ou construction."}
           </p>
-          <p className="font-bold mt-5">
-            Dernière mise à jour le: <span className="font-normal">21/11/2024 17:02</span>
+          <p className="font-bold">
+            {"Dernière mise à jour le:"} <span className="font-normal"> {"21/11/2024 17:02"} </span>
           </p>
         </div>
 
-        <div className="max-w-7xl mx-14 mt-10 z-50">
-          {minecraft_builds.map((build: any, index: number) => {
+        <div className="mt-10 z-50">
+          {minecraft_builds.map((build, index: number) => {
             const images = Array.from({ length: build.count }, (_, i) => ({
               src: `/mcbuild/${build.name}${i + 1}.png`,
             }));
 
             return (
-              <div key={index} className="mb-16">
-                <h2 className="text-3xl bg-gradient-to-r dark:from-slate-200 dark:to-slate-400 from-slate-800 to-slate-950 bg-clip-text text-transparent font-bold mb-4">
+              <div key={index} className="md:mb-16 mb-10 md:text-base text-sm">
+                <h2 className="md:text-3xl text-[1.6rem] bg-gradient-to-r dark:from-slate-200 dark:to-slate-400 from-slate-800 to-slate-950 bg-clip-text text-transparent font-[700] mb-4">
                   {build.title}
                 </h2>
                 {build.text && <p className="mb-6">{build.text}</p>}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 md:gap-6 gap-1">
                   {images.map((image, idx) => (
-                    <div key={idx} className="overflow-hidden rounded-md hover:scale-105 pointer-events-auto transition-transform duration-300 ease-in-out">
-                      <img
+                    <div key={idx} className="overflow-hidden rounded-md md:hover:scale-105 pointer-events-auto transition-transform duration-300 ease-in-out">
+                      <Image
                         src={image.src}
                         alt={`Image ${idx + 1} de ${build.title}`}
                         className="object-cover w-full h-full transform cursor-pointer"
+                        width={1980}
+                        height={1080}
+                        loader={() => image.src}
                         onClick={() => {
                           setSelectedImageSrc(image.src);
                           setIsModalOpen(true);
@@ -152,7 +160,7 @@ const Minecraft: React.FC = () => {
       {isModalOpen && (
         <ImageModal src={selectedImageSrc} onClose={() => setIsModalOpen(false)} />
       )}
-    </section>
+    </div>
   );
 };
 

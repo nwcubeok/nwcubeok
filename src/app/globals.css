@@ -60,15 +60,6 @@ layer(base);
   --animate-background-position-spin: background-position-spin 3000ms infinite
     alternate;
 
-  @keyframes pan {
-    0% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: 100% 100%;
-    }
-  }
-
 }
 
 /*
@@ -181,6 +172,16 @@ layer(base);
 
   }
 }
+
+@keyframes pan {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
 
 @keyframes gridPulse {
   0%, 100% {

@@ -7,7 +7,7 @@ const JojoTitleLogo = ({ width = 30, height = 30 }) => {
         alt="Jojo Title logo"
         width={width}
         height={height}
-        priority
+        loader={() => "/jojo_title_logo.svg"}
       />
   );
 };

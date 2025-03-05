@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { LineShadowText } from "@/components/ui/line-shadow-text";
 import { cn } from "@/lib/utils";
-import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { useTheme } from "next-themes";
 
 const Hero = () => {
@@ -22,7 +21,7 @@ const Hero = () => {
   const shadowColor = resolvedTheme === "dark" ? "white" : "black";
 
   return (
-    <section className="h-screen w-screen">
+    <div className="h-screen w-screen">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="flex text-balance whitespace-pre-wrap font-jersey md:text-9xl text-7xl text-primary">
           {name.split("").map((char, index) => (
@@ -43,7 +42,7 @@ const Hero = () => {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

@@ -8,7 +8,7 @@ const JojoLogo = ({ width = 18, height = 18 }) => {
         alt="Jojo logo"
         width={width}
         height={height}
-        priority
+        loader={() => "/jojo_logo.svg"}
       />
     </div>
   );
