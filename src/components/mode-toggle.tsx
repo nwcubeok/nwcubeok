@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import React, { useState, useEffect } from "react"
 import { useTheme } from "next-themes"
 import { motion as m } from "framer-motion"
 
@@ -62,10 +62,18 @@ const shineVariant = {
 };
 
 export default function ModeToggle() {
-  const { theme, setTheme } = useTheme()
-
+  const { theme, setTheme } = useTheme();
   const sunPath = "M34.5 49C42.5081 49 49 42.5081 49 34.5C49 26.4919 42.5081 20 34.5 20C26.4919 20 20 26.4919 20 34.5C20 42.5081 26.4919 49 34.5 49Z"
   const moonPath = "M34.5 49C42.5081 49 49 42.5081 49 34.5C36.4935 39.9755 29.1633 34.1245 34.5 20C26.4919 20 20 26.4919 20 34.5C20 42.5081 26.4919 49 34.5 49Z"
+
+  const [mounted, setMounted] = useState(false);
+
+  // Ne pas rendre le composant tant que le thème n'est pas chargé
+  useEffect(() => {
+      setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <Button 
@@ -78,8 +86,9 @@ export default function ModeToggle() {
       <m.svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg" className='relative'>
       <m.path variants={shineVariant} d={moonPath} className={'absolute top-0 left-0 stroke-blue-100 '} initial="hidden" animate={theme === 'dark' ? 'visible' : "hidden"} />
       <m.path 
-        d={sunPath}
+        d={moonPath}
         fill="transparent"
+        stroke="white"
         transition={{ duration: 1, type: "spring" }}
         initial={{ fillOpacity: 0, strokeOpacity: 0 }}
         animate={

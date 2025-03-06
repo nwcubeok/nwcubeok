@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
+
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
@@ -22,6 +23,10 @@ export default function Home() {
   // Fonction de navigation vers une section spécifique
   const updateScrollPosition = (href: string) => {
     if (isMobile) {
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
       return;
     }
     const sectionWidth = window.innerWidth;
@@ -44,6 +49,7 @@ export default function Home() {
       });
     }
   };
+  
 
   useEffect(() => {
     if (isMobile) return; // Sur mobile, on ne configure pas le scroll horizontal.
@@ -54,7 +60,6 @@ export default function Home() {
       sections.forEach((section) => {
         maxWidth += section.offsetWidth;
       });
-      console.log("Largeur totale :", maxWidth);
     };
 
     setTimeout(() => {

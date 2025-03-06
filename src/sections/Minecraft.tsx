@@ -41,6 +41,7 @@ const Minecraft: React.FC = () => {
           width={1980}
           height={1080}
           loader={() => src}
+          unoptimized
         />
       </div>
     </div>
@@ -97,12 +98,13 @@ const Minecraft: React.FC = () => {
 
         <div className="flex items-center md:gap-5 gap-3 md:mb-10 mb-8">
           <Image
-            src="minecraft-icon.png"
+            src="assets/minecraft-icon.png"
             className="size-16 md:block hidden"
             alt="Minecraft Icon"
             width={64}
             height={64}
-            loader={() => "/minecraft-icon.png"}
+            loader={() => "assets/minecraft-icon.png"}
+            unoptimized
           />
           <h1 className="md:text-5xl text-4xl md:text-left text-center font-gasoekone bg-gradient-to-r dark:from-slate-200 dark:to-slate-400 from-slate-900 to-slate-700 bg-clip-text text-transparent">
             Projets Minecraft
@@ -142,6 +144,7 @@ const Minecraft: React.FC = () => {
                         width={1980}
                         height={1080}
                         loader={() => image.src}
+                        unoptimized
                         onClick={() => {
                           setSelectedImageSrc(image.src);
                           setIsModalOpen(true);
