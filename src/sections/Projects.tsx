@@ -23,7 +23,7 @@ const projects = [
     classNameTitle: "text-primary",
     classNameDescription: "text-primary",
     className:
-      "md:row-start-1 md:row-end-5 md:col-start-1 md:col-end-2 row-start-1 row-end-6",
+      "md:row-start-1 md:row-end-5 md:col-start-1 md:col-end-4 row-start-1 row-end-6",
   },
   {
     Icon: () => <Bomb stroke="hsl(var(--primary))" width={48} height={48} />,
@@ -47,7 +47,7 @@ const projects = [
     classNameTitle: "text-primary",
     classNameDescription: "text-primary",
     className:
-      "md:row-start-1 md:row-end-5 md:col-start-2 md:col-end-3 row-start-6 row-end-11",
+      "md:row-start-1 md:row-end-5 md:col-start-4 md:col-end-7 row-start-6 row-end-11",
   },
 ];
 
@@ -64,13 +64,14 @@ const Projects = () => {
             {projects.map((project) => (
               <BentoCardProject key={project.name} {...project} />
             ))}
+
             <div
               key={"soon"}
               className={cn(
                 "group relative col-span-3 flex flex-col-reverse justify-between overflow-hidden",
                 "[box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
                 "transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
-                "md:row-start-5 md:row-end-6 md:col-start-1 md:col-end-4 row-start-11 row-end-11 col-start-1 col-end-4"
+                "md:row-start-5 md:row-end-6 md:col-start-1 md:col-end-7 row-start-11 row-end-11 col-start-1 col-end-4"
               )}
             >
               <div className="group-hover:rotate-180 duration-200 ease-in-out absolute w-full top-1/2 -translate-y-1/2">
@@ -82,7 +83,6 @@ const Projects = () => {
                         index % 2 === 0 ? "rotate-225 md:ml-10 ml-3.5" : "rotate-45"
                       }`}
                     >
-                  
                       ?
                     </div>
                   ))}
@@ -91,9 +91,6 @@ const Projects = () => {
             </div>
           </BentoGrid>
         </div>
-      </div>
-      <div className="md:absolute hidden bottom-4 right-4">
-        <a className="text-primary font-jersey text-lg pointer-events-auto" href="https://github.com/nwcubeok/nwcubeok">v.1.0.0</a>
       </div>
     </div>
   );

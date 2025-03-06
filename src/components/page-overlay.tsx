@@ -14,8 +14,6 @@ const PageOverlay = () => {
 
     if (!mounted) return null;
 
-    const color = resolvedTheme === 'dark' ? '#f5e8f6' : '#11090f'
-
     return (
 
         <div className="fixed w-screen h-screen">
