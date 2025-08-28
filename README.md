@@ -3,7 +3,7 @@
   
   <h1>👋 Hi, I'm Rayane!</h1>
   <p>Passionate about coding, creativity, and collaboration</p>
-  <p>Currently working on web projects using 3D technologies</p>
+  <p>Currently working on web projects</p>
 </div>
 
 
@@ -36,7 +36,7 @@
   </tr>
   <tr>
     <td style="border: none; padding: 0;">
-      <img height=189 align="center" src="https://streak-stats.demolab.com/?user=nwcubeok&theme=rose" alt="GitHub Streak" style="width: 100%;" />
+      <img height=189 align="center" src="https://readme-streak-stats-2kuh.vercel.app/?user=nwcubeok&theme=rose" alt="GitHub Streak" style="width: 100%;" />
     </td>
   </tr>
 </table>
