@@ -28,10 +28,10 @@
 <table align="center" style="border: none; border-collapse: collapse; width: 100%; margin: 0 auto; background-color: transparent; padding: 0;">
   <tr>
     <td style="border: none; padding: 0; margin: 0;">
-      <img height=200 align="center" src="https://github-readme-stats.vercel.app/api?username=nwcubeok&show_icons=true&theme=rose" alt="GitHub Stats" style="width: 100%;" />
+      <img height=200 align="center" src="https://readme-stats-two-eta.vercel.app/api?username=nwcubeok&show_icons=true&theme=rose" alt="GitHub Stats" style="width: 100%;" />
     </td>
     <td style="border: none; padding: 0; height: 100%; background-color: transparent; margin: 0;" rowspan="2">
-      <img height=430 align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=nwcubeok&layout=donut-vertical&theme=rose" alt="Top Languages" style="width: 100%;" />
+      <img height=430 align="center" src="https://readme-stats-two-eta.vercel.app/api/top-langs/?username=nwcubeok&layout=donut-vertical&theme=rose" alt="Top Languages" style="width: 100%;" />
     </td>
   </tr>
   <tr>
