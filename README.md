@@ -36,7 +36,7 @@
   </tr>
   <tr>
     <td style="border: none; padding: 0;">
-      <img height=189 align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=nwcubeok&theme=rose" alt="GitHub Streak" style="width: 100%;" />
+      <img height=189 align="center" src="https://streak-stats.demolab.com/?user=nwcubeok&theme=rose" alt="GitHub Streak" style="width: 100%;" />
     </td>
   </tr>
 </table>
