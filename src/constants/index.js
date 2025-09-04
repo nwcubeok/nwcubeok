@@ -25,7 +25,7 @@ export const minecraft_builds = [
     },
     {
       title: "Village",
-      text: "Village simple pour un serveur survie.",
+      text: "Spawn d'un serveur survie communautaire qui est un village avec un portail à son centre thématisé sur le Warden.",
       name: "village",
       count: 2,
     },
