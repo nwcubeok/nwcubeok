@@ -182,7 +182,6 @@ layer(base);
   }
 }
 
-
 @keyframes gridPulse {
   0%, 100% {
     transform: scale(1);
@@ -218,3 +217,7 @@ layer(base);
   }
 }
 
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}

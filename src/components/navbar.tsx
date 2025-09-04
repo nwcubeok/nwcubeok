@@ -1,8 +1,8 @@
 import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { HomeIcon, GithubIcon, Bomb } from "lucide-react";
+import { HomeIcon, GithubIcon, Bomb, Box } from "lucide-react";
 import JojoLogo from "@/components/jojo-logo";
+
+import { useRouter, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -18,6 +18,7 @@ const Icons = {
   github: GithubIcon,
   jojo: JojoLogo,
   bomb: Bomb,
+  minecraft: Box,
 };
 
 const NAVBAR_DATA = [
@@ -27,22 +28,20 @@ const NAVBAR_DATA = [
 const PROJECTS_DATA = [
   { href: "#projects", icon: Icons.jojo, label: "Jojodle" },
   { href: "#projects", icon: Icons.bomb, label: "Minesweeper" },
+  { href: "/minecraft", icon: Icons.minecraft, label: "Minecraft" },
 ]
 
-const CONTACT_DATA = {
-  social: {
-    GitHub: {
-      name: "GitHub",
-      url: "https://github.com/nwcubeok",
-      icon: Icons.github, 
-    },
-  },
-};
+const CONTACT_DATA = [
+  { href: "https://github.com/nwcubeok", icon: Icons.github, label: "GitHub" },
+];
 
 export function Navbar({ updateScrollPosition }: { updateScrollPosition: (targetSection: string) => void }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   return (
     <div className="fixed z-20 top-0 left-1/2 -translate-x-1/2">
-      <TooltipProvider>
+      <TooltipProvider key={pathname}>
         <Dock direction="middle">
           {NAVBAR_DATA.map((item) => (
             <DockIcon key={item.label}>
@@ -53,7 +52,7 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
                     onClick={() => updateScrollPosition(item.href)}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 hover:cursor-pointer"
+                      "rounded-full size-12 hover:cursor-pointer"
                     )}
                   >
                     <item.icon/>
@@ -70,16 +69,27 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
             <DockIcon key={item.label}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button
-                    aria-label={item.label}
-                    onClick={() => updateScrollPosition(item.href)}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 hover:cursor-pointer"
-                    )}
-                  >
-                    <item.icon/>
-                  </button>
+                  {item.href.startsWith("#") ? (
+                    // Scroll (pas changé)
+                    <button
+                      type="button"
+                      aria-label={item.label}
+                      onClick={() => updateScrollPosition(item.href)}
+                      className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "rounded-full size-12 hover:cursor-pointer")}
+                    >
+                      <item.icon />
+                    </button>
+                  ) : (
+                    // Navigation interne sans bug
+                    <button
+                      type="button"
+                      aria-label={item.label}
+                      onClick={() => router.push(item.href)}
+                      className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "rounded-full size-12 hover:cursor-pointer")}
+                    >
+                      <item.icon />
+                    </button>
+                  )}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{item.label}</p>
@@ -88,23 +98,22 @@ export function Navbar({ updateScrollPosition }: { updateScrollPosition: (target
             </DockIcon>
           ))}
           <Separator orientation="vertical" className="h-full" />
-          {Object.entries(CONTACT_DATA.social).map(([name, social]) => (
-            <DockIcon key={name}>
+          {CONTACT_DATA.map((item) => (
+            <DockIcon key={item.label}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <a
-                    href={social.url} target="_blank" rel="noreferrer"
-                    aria-label={social.name}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 hover:cursor-pointer"
-                    )}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label}
+                    className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "rounded-full size-12 hover:cursor-pointer")}
                   >
-                    <social.icon className="size-4" />
+                    <item.icon />
                   </a>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{name}</p>
+                  <p>{item.label}</p>
                 </TooltipContent>
               </Tooltip>
             </DockIcon>

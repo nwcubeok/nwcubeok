@@ -2,6 +2,7 @@ import { Bomb } from "lucide-react";
 import JojoLogo from "@/components/jojo-logo";
 import JojoTitleLogo from "@/components/jojotitle-logo";
 import { cn } from "@/lib/utils";
+import { TiltWrapper } from "@/components/tilt-wrapper";
 import { BentoCardProject, BentoGrid } from "@/components/ui/bento-grid";
 
 const projects = [
@@ -10,8 +11,9 @@ const projects = [
     LargeLogo: <JojoTitleLogo width={226} height={226} />,
     name: "Jojodle",
     description: "Beat the Jojodle games with new minigame every day.",
-    href: "/",
+    href: "https://jojodle.nwcubeok.net/",
     cta: "Play",
+    playable: true,
     background: (
       <div className="relative h-full w-full pointer-events-auto">
         <div className="bg-[radial-gradient(var(--jojodle-1),var(--jojodle-2))] h-full overflow-hidden opacity-100">
@@ -30,8 +32,9 @@ const projects = [
     LargeLogo: <Bomb stroke="hsl(var(--primary))" width={226} height={226} />,
     name: "Special Minesweeper",
     description: "A unique twist on the classic minesweeper game.",
-    href: "/minesweeper",
-    cta: "Play",
+    href: "/",
+    cta: "In development...",
+    playable: false,
     background: (
       <div className="relative h-full w-full pointer-events-auto">
         {/* Fond de base rappelant la chaleur d'une explosion */}
@@ -62,7 +65,7 @@ const Projects = () => {
             "p-0"
           )}>
             {projects.map((project) => (
-              <BentoCardProject key={project.name} {...project} />
+                <BentoCardProject key={project.name} {...project} classNameTitle={project.classNameTitle} classNameDescription={project.classNameDescription} />
             ))}
 
             <div

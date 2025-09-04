@@ -4,7 +4,7 @@ import { ArrowRightIcon, PlayIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Pointer } from "@/components/ui/pointer";
-import { TiltWrapper } from "../tilt-wrapper";
+import { TiltWrapper } from "@/components/tilt-wrapper";
 
 const BentoGrid = ({
   children,
@@ -36,6 +36,7 @@ const BentoCardProject = ({
   description,
   href,
   cta,
+  playable
 }: {
   name: string;
   className: string;
@@ -47,6 +48,7 @@ const BentoCardProject = ({
   description: string;
   href: string;
   cta: string;
+  playable: boolean;
 }) => (
   <TiltWrapper
     key={name}
@@ -90,11 +92,17 @@ const BentoCardProject = ({
           "pointer-events-none absolute bottom-0 flex flex-row items-center w-full transform-gpu md:p-4 p-2 opacity-0 transition-all duration-300 group-hover:opacity-100",
         )}
       >
-        <Button variant="ghost" asChild size="sm" className="text-lg hover:bg-background w-full pointer-events-auto">
-          <a href={href}>
-            {cta}
-            <PlayIcon className="ml-2 h-4 w-4" />
-          </a>
+        <Button variant="ghost" asChild size="sm" className={`text-lg ${playable ? 'hover:bg-background' : ''} w-full pointer-events-auto`}>
+          { playable ? 
+            <a href={href}>
+              {cta}
+              <PlayIcon className="ml-2 h-4 w-4" />
+            </a>
+            :
+            <p>
+              {cta}
+            </p>
+          }
         </Button>
       </div>
     </div>
