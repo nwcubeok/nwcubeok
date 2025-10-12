@@ -1,32 +1,22 @@
+"use client";
 import { cn } from "@/lib/utils";
 import React, { useState, useRef, useEffect } from "react";
 
 interface InteractiveGridPatternProps extends React.SVGProps<SVGSVGElement> {
-  /** Largeur d'un carré (en pixels) */
-  width?: number;
-  /** Hauteur d'un carré (en pixels) */
-  height?: number;
-  /** Nombre de carrés dans la grille : [nombre horizontal, nombre vertical] */
-  squares?: [number, number];
-  /** Durée d'estompage de chaque carré après survol (en ms) */
-  fadeDuration?: number;
-  /** Épaisseur de la ligne (1 = case unique, >1 = on remplit également les cases voisines) */
-  thickness?: number;
-  /** Classes CSS à appliquer sur l'élément SVG */
+  width?: number;           // largeur d’une case (px)
+  height?: number;          // hauteur d’une case (px)
+  squares?: [number, number]; // [colonnes, lignes]
+  fadeDuration?: number;    // ms
+  thickness?: number;       // épaisseur “pinceau”
   className?: string;
-  /** Classes CSS à appliquer sur chaque carré */
   squaresClassName?: string;
-  /**
-   * Objet optionnel pour fixer la couleur de certains carrés.
-   * La clé est l'indice du carré et la valeur la couleur (ex. { "10": "red", "20": "blue" }).
-   */
   fixedSquares?: { [index: number]: string };
 }
 
 export function InteractiveGridPattern({
   width = 40,
   height = 40,
-  squares = [24, 24],
+  squares = [50, 50],
   fadeDuration = 2000,
   thickness = 1,
   className,
@@ -34,102 +24,148 @@ export function InteractiveGridPattern({
   fixedSquares,
   ...props
 }: InteractiveGridPatternProps) {
-  // Décomposition de la grille en colonnes et lignes
   const [horizontal, vertical] = squares;
-  // Stocke pour chaque case le timestamp de son dernier survol
-  const [hoverTimes, setHoverTimes] = useState<{ [index: number]: number }>({});
-  // Temps courant (pour le calcul de l'estompage)
-  const [currentTime, setCurrentTime] = useState(Date.now());
 
-  // Références pour la position de la souris et le dernier point traité
+  // timestamp de dernier survol par case
+  const [hoverTimes, setHoverTimes] = useState<{ [index: number]: number }>({});
+  // temps courant pour le fade
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
+
+  // refs pour la souris / dernier point BESENHAM
   const currentMousePosRef = useRef<{ x: number; y: number } | null>(null);
   const lastUpdatedPosRef = useRef<{ x: number; y: number } | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
 
-  // Boucle d'animation pour mettre à jour currentTime et tracer la case sous la souris
+  // état rAF
+  const rafIdRef = useRef<number | null>(null);
+  const runningRef = useRef<boolean>(false);
+
+  // util — clamp dans [min, max]
+  const clamp = (v: number, min: number, max: number) =>
+    Math.max(min, Math.min(max, v));
+
+  // boucle d’anim
   useEffect(() => {
-    let animationFrame: number;
+    runningRef.current = true;
+
     const tick = () => {
+      if (!runningRef.current) return;
+
+      // avance le temps d’estompage (provoque un re-render)
       setCurrentTime(Date.now());
 
-      if (currentMousePosRef.current) {
-        const pos = currentMousePosRef.current;
+      const pos = currentMousePosRef.current;
+      if (pos) {
+        // Clamp aux bords du SVG (évite col/row hors-grille)
+        let col = Math.floor(pos.x / width);
+        let row = Math.floor(pos.y / height);
+        col = clamp(col, 0, horizontal - 1);
+        row = clamp(row, 0, vertical - 1);
+
         if (!lastUpdatedPosRef.current) {
-          // Première position : on met à jour la case correspondante
-          const col = Math.floor(pos.x / width);
-          const row = Math.floor(pos.y / height);
-          const newIndex = row * horizontal + col;
-          updateHoveredSquares([newIndex]);
+          updateHoveredSquares([row * horizontal + col]);
         } else {
-          // Calculer la ligne entre le dernier point traité et la position actuelle
-          const lastPos = lastUpdatedPosRef.current;
-          const colOld = Math.floor(lastPos.x / width);
-          const rowOld = Math.floor(lastPos.y / height);
-          const colNew = Math.floor(pos.x / width);
-          const rowNew = Math.floor(pos.y / height);
-          const indices = getLineIndices(colOld, rowOld, colNew, rowNew, horizontal);
+          // ligne entre last → current
+          let colOld = Math.floor(lastUpdatedPosRef.current.x / width);
+          let rowOld = Math.floor(lastUpdatedPosRef.current.y / height);
+          colOld = clamp(colOld, 0, horizontal - 1);
+          rowOld = clamp(rowOld, 0, vertical - 1);
+
+          const indices = getLineIndices(colOld, rowOld, col, row, horizontal);
           updateHoveredSquares(indices);
         }
-        // Mettre à jour le dernier point traité
-        lastUpdatedPosRef.current = pos;
+        lastUpdatedPosRef.current = { x: pos.x, y: pos.y };
       }
 
-      animationFrame = requestAnimationFrame(tick);
+      rafIdRef.current = requestAnimationFrame(tick);
     };
 
-    animationFrame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [width, horizontal, vertical, fixedSquares]);
+    rafIdRef.current = requestAnimationFrame(tick);
 
-  // Mise à jour de la position de la souris dans le SVG
-  const handleMouseMove = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    const svg = event.currentTarget;
-    const rect = svg.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    currentMousePosRef.current = { x, y };
-  };
+    return () => {
+      // cleanup strict & nav
+      runningRef.current = false;
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+      currentMousePosRef.current = null;
+      lastUpdatedPosRef.current = null;
+    };
+    // dépendances minimales : dimensions/grille
+  }, [width, height, horizontal, vertical, fadeDuration, thickness]);
 
-  // Réinitialisation lors du départ de la souris
-  const handleMouseLeave = () => {
-    currentMousePosRef.current = null;
-    lastUpdatedPosRef.current = null;
-  };
+  useEffect(() => {
+    const handlePointerMove = (e: PointerEvent) => {
+      const svg = svgRef.current;
+      if (!svg) return;
+      const rect = svg.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-  /**
-   * Met à jour le timestamp pour chaque case (ou groupe de cases si thickness > 1)
-   * sauf pour les cases fixées (définies dans fixedSquares).
-   */
+      // si la souris est hors de l'aire de l'SVG, on “reset” le tracé
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+        currentMousePosRef.current = null;
+        lastUpdatedPosRef.current = null;
+        return;
+      }
+      currentMousePosRef.current = { x, y };
+    };
+
+    const handleLeave = () => {
+      currentMousePosRef.current = null;
+      lastUpdatedPosRef.current = null;
+    };
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("blur", handleLeave);
+    window.addEventListener("pointerleave", handleLeave);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("blur", handleLeave);
+      window.removeEventListener("pointerleave", handleLeave);
+    };
+  }, []);
+
+  // met à jour les timestamps (respecte fixedSquares)
   const updateHoveredSquares = (indices: number[]) => {
+    if (!indices.length) return;
     setHoverTimes((prev) => {
-      const newTimes = { ...prev };
       const now = Date.now();
-      indices.forEach((idx) => {
-        // Si cette case est fixée, ne pas la modifier
-        if (fixedSquares && fixedSquares[idx] !== undefined) return;
+      // copie paresseuse
+      const next = { ...prev };
+
+      for (const idx of indices) {
+        if (idx < 0 || idx >= horizontal * vertical) continue;
+        if (fixedSquares && fixedSquares[idx] !== undefined) continue;
+
         if (thickness > 1) {
-          const thickIndices = getThickIndices(idx, thickness, horizontal, vertical);
-          thickIndices.forEach((tIdx) => {
-            // On ne modifie pas une case fixée
-            if (fixedSquares && fixedSquares[tIdx] !== undefined) return;
-            newTimes[tIdx] = now;
-          });
+          const thickIndices = getThickIndices(
+            idx,
+            thickness,
+            horizontal,
+            vertical
+          );
+          for (const tIdx of thickIndices) {
+            if (fixedSquares && fixedSquares[tIdx] !== undefined) continue;
+            next[tIdx] = now;
+          }
         } else {
-          newTimes[idx] = now;
+          next[idx] = now;
         }
-      });
-      return newTimes;
+      }
+      return next;
     });
   };
 
-  /**
-   * Algorithme de Bresenham pour récupérer les indices des cases entre deux points (en coordonnées de grille)
-   */
+  // Bresenham en grille
   function getLineIndices(
     x0: number,
     y0: number,
     x1: number,
     y1: number,
-    gridWidth: number,
+    gridWidth: number
   ): number[] {
     const indices: number[] = [];
     const dx = Math.abs(x1 - x0);
@@ -139,8 +175,13 @@ export function InteractiveGridPattern({
     let err = dx - dy;
     let x = x0;
     let y = y0;
+
+    // borne dure pour éviter tout débordement
+    const inBounds = (cx: number, cy: number) =>
+      cx >= 0 && cx < horizontal && cy >= 0 && cy < vertical;
+
     while (true) {
-      indices.push(y * gridWidth + x);
+      if (inBounds(x, y)) indices.push(y * gridWidth + x);
       if (x === x1 && y === y1) break;
       const e2 = 2 * err;
       if (e2 > -dy) {
@@ -155,51 +196,56 @@ export function InteractiveGridPattern({
     return indices;
   }
 
-  /**
-   * Retourne les indices "épais" autour d'une case.
-   */
+  // indices épais autour d’une case
   const getThickIndices = (
     index: number,
     thickness: number,
     gridWidth: number,
-    gridHeight: number,
+    gridHeight: number
   ): number[] => {
-    const indices: number[] = [];
+    const out: number[] = [];
     const col = index % gridWidth;
     const row = Math.floor(index / gridWidth);
     const half = Math.floor((thickness - 1) / 2);
+
     for (let dy = -half; dy <= half; dy++) {
       for (let dx = -half; dx <= half; dx++) {
         const newRow = row + dy;
         const newCol = col + dx;
-        if (newRow >= 0 && newRow < gridHeight && newCol >= 0 && newCol < gridWidth) {
-          indices.push(newRow * gridWidth + newCol);
+        if (
+          newRow >= 0 &&
+          newRow < gridHeight &&
+          newCol >= 0 &&
+          newCol < gridWidth
+        ) {
+          out.push(newRow * gridWidth + newCol);
         }
       }
     }
-    return indices;
+    return out;
   };
-  
+
+  const total = horizontal * vertical;
 
   return (
     <svg
+      ref={svgRef}
       width={width * horizontal}
       height={height * vertical}
       className={cn("absolute inset-0 h-full w-full", className)}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       {...props}
     >
-      {Array.from({ length: horizontal * vertical }).map((_, index) => {
+      {Array.from({ length: total }).map((_, index) => {
         const xPos = (index % horizontal) * width;
         const yPos = Math.floor(index / horizontal) * height;
         const hoverTime = hoverTimes[index];
+
         let opacity = 0;
         if (hoverTime) {
           const delta = currentTime - hoverTime;
           opacity = Math.max(0, 1 - delta / fadeDuration);
         }
-        // Si la case est fixée, utilisez la couleur fixe, sinon la couleur calculée
+
         const fillColor =
           fixedSquares && fixedSquares[index] !== undefined
             ? fixedSquares[index]

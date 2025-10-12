@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'nwcubeok',
+  title: 'nwcubeok | home',
 };
 
 const geistSans = localFont({
@@ -24,10 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className="light" style={{ colorScheme: "light" }}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -37,7 +35,6 @@ export default function RootLayout({
             {children}
             
         </ThemeProvider>
-        
       </body>
     </html>
   );
