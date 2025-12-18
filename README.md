@@ -24,6 +24,12 @@
 
 ---
 
+### 💾 Some of my public projects:
+<ul>
+<li><a href="https://jojodle.nwcubeok.net">The JoJodle</a>, an interactive web game based on Jojo's Bizarre Adventure</li>
+</ul>
+
+---
 ### 🌟 GitHub Stats:
 <table align="center" style="border: none; border-collapse: collapse; width: 100%; margin: 0 auto; background-color: transparent; padding: 0;">
   <tr>
