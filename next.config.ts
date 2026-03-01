@@ -1,6 +1,15 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/ads.txt",
+        destination: "https://srv.adstxtmanager.com/19390/nwcubeok.net",
+        permanent: true, // 308
+      },
+    ];
+  },
   trailingSlash: true,
   output: "export",
   images: {
